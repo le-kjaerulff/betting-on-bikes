@@ -579,11 +579,12 @@ MonoBehaviour:
   - {fileID: 699245445}
   - {fileID: 1873006461}
   - {fileID: 1971830969}
+  waypointRadius: 1
   rotationOffset: 90
-  moveSpeed: 1
-  swerveAmt: 2
-  swerveSpeed: 1
-  turnSpeed: 1
+  moveSpeed: 2
+  swerveAmt: 0.03
+  swerveSpeed: 5
+  turnSpeed: 2
   useTriForSwerve: 1
 --- !u!212 &1685436283
 SpriteRenderer:
@@ -652,13 +653,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1685436281}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.23047435, w: 0.9730784}
-  m_LocalPosition: {x: -5.98, y: -2.34, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalRotation: {x: 0, y: 0, z: -0.8107064, w: 0.58545303}
+  m_LocalPosition: {x: -5.61, y: -2.71, z: 0}
+  m_LocalScale: {x: 0.19562, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -26.65}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -108.33}
 --- !u!1 &1689682561 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3395792072107646955, guid: b38fef9df0f908146b4de22ec06a1b89, type: 3}
