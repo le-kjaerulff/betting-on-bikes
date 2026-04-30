@@ -13,20 +13,38 @@ public class GameManager : MonoBehaviour
     public Cyclist betCyclist;
     public string betOther;
     public int betAmount;
+    
     private bool _openForBets = false;
+
     
     [ContextMenu("Place Bet Test")]
-    void PlaceBetTest()
+    public void PlaceBetButton()
     {
         PlaceBet(betAmount, betCyclist, AccidentType.Collision, betOther);
     }
     
     [ContextMenu("Begin Round Test")]
-    void BeginRoundTest()
+    public void BeginRoundTest()
     {
         BeginRaceRound();
     }
-    
+
+    public void IncreaseBetButton()
+    {
+        betAmount += 10;
+    }
+
+    public void DecreaseBetButton()
+    {
+        betAmount -= 10;
+    }
+
+    public void SelectCyclistButton(int idNum)
+    {
+        betCyclist = cyclists[idNum];
+    }
+
+
     void Start()
     {
         foreach (var cyclist in cyclists)
@@ -122,6 +140,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Race round is over!");
         BeginBettingRound();
     }
-
     
+
 }
