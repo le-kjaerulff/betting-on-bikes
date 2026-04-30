@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &668009895619174104
+--- !u!1001 &4348432709164765260
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,19 +10,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1586230665311131214, guid: 7c9e39c111448b441a11bd830f4fd0f5, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.06274508
       objectReference: {fileID: 0}
     - target: {fileID: 1586230665311131214, guid: 7c9e39c111448b441a11bd830f4fd0f5, type: 3}
       propertyPath: m_Color.g
-      value: 0.3619089
+      value: 0.9254902
       objectReference: {fileID: 0}
     - target: {fileID: 1586230665311131214, guid: 7c9e39c111448b441a11bd830f4fd0f5, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 0.0797773
       objectReference: {fileID: 0}
     - target: {fileID: 3395792072107646955, guid: 7c9e39c111448b441a11bd830f4fd0f5, type: 3}
       propertyPath: m_Name
-      value: WaypointGreen
+      value: WaypointRed
       objectReference: {fileID: 0}
     - target: {fileID: 5405238876555510414, guid: 7c9e39c111448b441a11bd830f4fd0f5, type: 3}
       propertyPath: m_LocalPosition.x
