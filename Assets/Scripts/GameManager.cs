@@ -1,6 +1,8 @@
 using System;   
-using System.Collections.Generic;   
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +18,9 @@ public class GameManager : MonoBehaviour
     
     private bool _openForBets = false;
 
+    public GameObject uiCanvas;
+    public TextMeshProUGUI betAmountDisplay;
+    
     
     [ContextMenu("Place Bet Test")]
     public void PlaceBetButton()
@@ -31,17 +36,26 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseBetButton()
     {
+        if (betAmount >= _activePlayer.cashBalance) return;
         betAmount += 10;
+        betAmountDisplay.text = betAmount.ToString();
     }
 
     public void DecreaseBetButton()
     {
+        if(betAmount <= 0) return;
         betAmount -= 10;
+        betAmountDisplay.text = betAmount.ToString();
     }
 
     public void SelectCyclistButton(int idNum)
     {
         betCyclist = cyclists[idNum];
+    }
+
+    public void selectColissionTargetButton(string tag)
+    {
+        betOther = tag;
     }
 
 
@@ -67,11 +81,10 @@ public class GameManager : MonoBehaviour
         {
             cyclist.Initialize();
         }
-        // ShowUI(true);
+        uiCanvas.SetActive(true);
         _openForBets = true;
         Debug.Log("Betting is open!");
-        _activePlayer = _players[0];
-        Debug.Log("It is " + _activePlayer.playerName + "s turn to place a bet! Your cash balance is: " + _activePlayer.cashBalance);
+        PassTurn(0);
     }
     
     private void PlaceBet(int amount, Cyclist cyclist, AccidentType accidentType, string otherPartyTag = null)
@@ -92,11 +105,6 @@ public class GameManager : MonoBehaviour
         _activePlayer.cashBalance -= amount;
         Debug.Log("Bet placed: "+ _activePlayer.playerName + " bets " + amount + " on " + cyclist.tag + " colliding with " + otherPartyTag);
         
-        PassTurn(_activePlayer.playerID+1);
-    }
-    
-    private void PassTurn(int id)
-    {
         if (_activePlayer.playerID >= _players.Count - 1)
         {
             Debug.Log("All bets are placed and betting is closed, starting race round");
@@ -104,13 +112,22 @@ public class GameManager : MonoBehaviour
             BeginRaceRound();
             return;
         }
+        PassTurn(_activePlayer.playerID+1);
+    }
+
+    
+    private void PassTurn(int id)
+    {
         _activePlayer = _players[id];
+        betAmount = 0;
+        betAmountDisplay.text = betAmount.ToString();
+        Debug.Log(betAmountDisplay.text);
         Debug.Log("It is " + _activePlayer.playerName + "s turn to place a bet! Your cash balance is: " + _activePlayer.cashBalance);
     }
     
     private void BeginRaceRound()
     {
-        // ShowUI(false);
+        uiCanvas.SetActive(false);
         foreach (var cyclist in cyclists)
         {
             cyclist.isAlive = true;
