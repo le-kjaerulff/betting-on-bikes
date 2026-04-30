@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject uiCanvas;
     public TextMeshProUGUI betAmountDisplay;
+    public TMP_Dropdown betOtherSelect;
     
     
     [ContextMenu("Place Bet Test")]
@@ -53,9 +54,10 @@ public class GameManager : MonoBehaviour
         betCyclist = cyclists[idNum];
     }
 
-    public void selectColissionTargetButton(string tag)
+    public void SelectColissionTargetButton()
     {
-        betOther = tag;
+        betOther = betOtherSelect.options[betOtherSelect.value].text;
+        Debug.Log(betOtherSelect.options[betOtherSelect.value].text);
     }
 
 
@@ -66,7 +68,6 @@ public class GameManager : MonoBehaviour
             cyclist.OnCollision += HandleCollision;
             cyclist.OnArrival += CheckIfRoundOver;
         }
-        
         _players.Add(new Player("Player1", 0, 200));
         //_players.Add(new Player("Player2", 1, 200));
        // _players.Add(new Player("Player3", 2, 200));
@@ -121,7 +122,6 @@ public class GameManager : MonoBehaviour
         _activePlayer = _players[id];
         betAmount = 0;
         betAmountDisplay.text = betAmount.ToString();
-        Debug.Log(betAmountDisplay.text);
         Debug.Log("It is " + _activePlayer.playerName + "s turn to place a bet! Your cash balance is: " + _activePlayer.cashBalance);
     }
     
