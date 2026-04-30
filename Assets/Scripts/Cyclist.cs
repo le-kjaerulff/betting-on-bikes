@@ -1,10 +1,13 @@
 using System;
+using Unity.Cinemachine;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Cyclist : MonoBehaviour
 {
+    public GameObject startPosition; 
     public bool isAlive = false;
+    public bool destinationReached = false;
     private const float RotationOffset = 90f;
     public GameObject[] waypoints;
     private Waypoint _nextWaypoint;
@@ -25,21 +28,14 @@ public class Cyclist : MonoBehaviour
     private float _swerveSeed;
     private float _speedSeed;
     
-    public event Action<Cyclist, string> OnCollision; 
+    public event Action<Cyclist, string> OnCollision;
+    public event Action OnArrival;
     
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _waypointsPassed = 0;
-        _nextWaypoint = waypoints[_waypointsPassed].GetComponent<Waypoint>();
-        _directionToWaypoint = (_nextWaypoint.gameObject.transform.position - transform.position).normalized;
-        _facingDirection = transform.up;
-        _swerveSeed = Random.Range(0f, 999f);
-        _speedSeed = Random.Range(0f, 999f);
+        Initialize();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         _nextWaypoint.DrawDebugCircle(_nextWaypoint.GetPosition(), _nextWaypoint.radius);
@@ -75,9 +71,18 @@ public class Cyclist : MonoBehaviour
         {
             _waypointsPassed+=1;
             //Debug.Log("Reached waypoint " +  _waypointsPassed);
-            if(_waypointsPassed == waypoints.Length ) return;
+            if (_waypointsPassed == waypoints.Length)
+            {
+                destinationReached = true;
+                isAlive = false;
+                Debug.Log(gameObject.name + " has reached their destination");
+                OnArrival?.Invoke();
+                return;
+            }
+           
             _nextWaypoint = waypoints[_waypointsPassed].GetComponent<Waypoint>();
             //Debug.Log("Waypoint changed");
+            
         }
         
         // debug stuff
@@ -88,8 +93,22 @@ public class Cyclist : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject.name == "CamerasBoundary") return;
+        if (isAlive) OnCollision?.Invoke(this, other.tag);
         isAlive = false;
-        OnCollision?.Invoke(this, other.tag);
-        Debug.Log(gameObject.tag + " has collided with " + other.tag);
+        
+    }
+
+    public void Initialize()
+    {
+        if(startPosition != null) transform.position = startPosition.transform.position;
+        isAlive = false;
+        destinationReached = false;
+        _waypointsPassed = 0;
+        _nextWaypoint = waypoints[_waypointsPassed].GetComponent<Waypoint>();
+        _directionToWaypoint = (_nextWaypoint.gameObject.transform.position - transform.position).normalized;
+        _facingDirection = transform.up;
+        _swerveSeed = Random.Range(0f, 999f);
+        _speedSeed = Random.Range(0f, 999f);
     }
 }

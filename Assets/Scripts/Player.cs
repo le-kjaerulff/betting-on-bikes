@@ -12,6 +12,7 @@ public class Player
         this.playerName = playerName;
         this.playerID = playerID;
         this.cashBalance = cashBalance;
+        Debug.Log("Welcome " + playerName);
     }
 
 }

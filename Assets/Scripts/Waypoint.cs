@@ -36,4 +36,6 @@ public class Waypoint : MonoBehaviour
     {
         return gameObject.transform.position;
     }
+
+ 
 }

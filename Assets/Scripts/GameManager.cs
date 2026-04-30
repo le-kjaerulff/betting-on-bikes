@@ -1,21 +1,22 @@
-using System;
-using System.Collections.Generic;
+using System;   
+using System.Collections.Generic;   
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private List<Player>  players = new List<Player>();
+    private List<Player>  _players = new List<Player>();
     private List<Bet> _activeBets = new List<Bet>();
-    private Player activePlayer;
+    private Player _activePlayer;
     
     public Cyclist[] cyclists;
 
     public Cyclist betCyclist;
     public string betOther;
-    public float betAmount;
+    public int betAmount;
+    private bool _openForBets = false;
     
-    [ContextMenu("Place Test Bet")]
-    void PlaceTestBet()
+    [ContextMenu("Place Bet Test")]
+    void PlaceBetTest()
     {
         PlaceBet(betAmount, betCyclist, AccidentType.Collision, betOther);
     }
@@ -23,43 +24,104 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Begin Round Test")]
     void BeginRoundTest()
     {
-        BeginRound();
+        BeginRaceRound();
     }
     
     void Start()
     {
-        players.Add(new Player("Mattia", 0, 200));
-        //players.Add(new Player("Ciro", 1, 200));
-        activePlayer = players[0];
-        Debug.Log("Active player: " + activePlayer.playerName);
         foreach (var cyclist in cyclists)
         {
             cyclist.OnCollision += HandleCollision;
+            cyclist.OnArrival += CheckIfRoundOver;
         }
+        
+        _players.Add(new Player("Player1", 0, 200));
+        //_players.Add(new Player("Player2", 1, 200));
+       // _players.Add(new Player("Player3", 2, 200));
+        //_players.Add(new Player("Player4", 3, 200));
+        
+        BeginBettingRound();
     }
     
-    void PlaceBet(float amount, Cyclist cyclist, AccidentType accidentType, string otherPartyTag = null)
+    private void BeginBettingRound()
     {
-        Bet newBet = new Bet(activePlayer, amount, cyclist, accidentType, otherPartyTag); // calls the constructor
+        foreach (var cyclist in cyclists)
+        {
+            cyclist.Initialize();
+        }
+        // ShowUI(true);
+        _openForBets = true;
+        Debug.Log("Betting is open!");
+        _activePlayer = _players[0];
+        Debug.Log("It is " + _activePlayer.playerName + "s turn to place a bet! Your cash balance is: " + _activePlayer.cashBalance);
+    }
+    
+    private void PlaceBet(int amount, Cyclist cyclist, AccidentType accidentType, string otherPartyTag = null)
+    {
+        if (!_openForBets)
+        {
+            Debug.Log("Can't place bet now, betting has closed for this round");
+            return;
+        }
+        if (amount > _activePlayer.cashBalance)
+        {
+            Debug.Log("Insufficient cash");
+            return;
+        }
+        
+        Bet newBet = new Bet(_activePlayer, amount, cyclist, accidentType, otherPartyTag); // calls the constructor
         _activeBets.Add(newBet);
-        Debug.Log("Bet placed: "+ activePlayer.playerName + " bets " + amount + " on " + cyclist.tag + " colliding with " + otherPartyTag);
+        _activePlayer.cashBalance -= amount;
+        Debug.Log("Bet placed: "+ _activePlayer.playerName + " bets " + amount + " on " + cyclist.tag + " colliding with " + otherPartyTag);
+        
+        PassTurn(_activePlayer.playerID+1);
     }
     
-    void BeginRound()
+    private void PassTurn(int id)
     {
+        if (_activePlayer.playerID >= _players.Count - 1)
+        {
+            Debug.Log("All bets are placed and betting is closed, starting race round");
+            _openForBets = false;
+            BeginRaceRound();
+            return;
+        }
+        _activePlayer = _players[id];
+        Debug.Log("It is " + _activePlayer.playerName + "s turn to place a bet! Your cash balance is: " + _activePlayer.cashBalance);
+    }
+    
+    private void BeginRaceRound()
+    {
+        // ShowUI(false);
         foreach (var cyclist in cyclists)
         {
             cyclist.isAlive = true;
         }
     }
     
-    
     void HandleCollision(Cyclist cyclist, string otherTag)
     {
         Debug.Log(cyclist.tag + " collided with " + otherTag);
-        // check active bets here and pay out
+        foreach (var bet in _activeBets)
+        {
+            if (bet.cyclist == cyclist && bet.otherTag == otherTag) bet.player.cashBalance += bet.amount * bet.odds ;
+        }
+        CheckIfRoundOver();
     }
     
-    
+    // ReSharper disable Unity.PerformanceAnalysis
+    private void CheckIfRoundOver()
+    {
+        foreach (var cyclist in cyclists)
+        {
+            if (cyclist.isAlive)
+            {
+                return;
+            }
+        }
+        Debug.Log("Race round is over!");
+        BeginBettingRound();
+    }
+
     
 }
