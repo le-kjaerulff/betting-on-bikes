@@ -89,9 +89,9 @@ public class GameManager : MonoBehaviour
             cyclist.OnArrival += CheckIfRoundOver;
         }
         _players.Add(new Player("Player 1", 0, 200));
-        //_players.Add(new Player("Player 2", 1, 200));
-        //_players.Add(new Player("Player 3", 2, 200));
-       //_players.Add(new Player("Player 4", 3, 200));
+        _players.Add(new Player("Player 2", 1, 200));
+        _players.Add(new Player("Player 3", 2, 200));
+       _players.Add(new Player("Player 4", 3, 200));
         
         BeginBettingRound();
     }
