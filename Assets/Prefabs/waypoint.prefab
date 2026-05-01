@@ -104,5 +104,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6009e20046647c04dab19e34270e999a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Waypoint
-  hidden: 0
-  radius: 1
+  hidden: 1
+  radius: 0.5

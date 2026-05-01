@@ -107,7 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CarSpawner
   carPrefab: {fileID: 6676282729430022316, guid: 8a95e08f8536ccc42bde24cfef50db72, type: 3}
   carSpeed: 6
-  spawnInterval: 4
+  spawnInterval: 5
 --- !u!1 &3618487419905911974
 GameObject:
   m_ObjectHideFlags: 0

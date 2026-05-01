@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class Cyclist : MonoBehaviour
 {
+    public string id;
+    public int index;
     public GameObject startPosition; 
     public bool isAlive = false;
     public bool destinationReached = false;
@@ -12,6 +14,7 @@ public class Cyclist : MonoBehaviour
     public GameObject[] waypoints;
     private Waypoint _nextWaypoint;
     private int _waypointsPassed;
+    
 
     [Header("Movement")] public bool swerve = true;
     public bool speedVariation = true;
@@ -30,7 +33,15 @@ public class Cyclist : MonoBehaviour
     
     public event Action<Cyclist, string> OnCollision;
     public event Action OnArrival;
-    
+
+    public Sprite[] sprites;
+    private SpriteRenderer _sr;
+
+    private void Awake()
+    {
+        _sr = GetComponent<SpriteRenderer>();
+    }
+
     void Start()
     {
         Initialize();
@@ -93,16 +104,24 @@ public class Cyclist : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.name == "CamerasBoundary") return;
+        if (other.gameObject.name == "CamerasBoundary")
+        {
+            Debug.Log("Camera collider triggered, fingers crossed it won't cause a bug :')");
+            return;
+        }
+        _sr.sprite = sprites[1];
+        transform.GetChild(0).gameObject.SetActive(true);
         if (isAlive) OnCollision?.Invoke(this, other.tag);
-        isAlive = false;
-        
     }
 
     public void Initialize()
     {
-        if(startPosition != null) transform.position = startPosition.transform.position;
+        GetComponent<PolygonCollider2D>().enabled = false;
         isAlive = false;
+        _sr.sprite = sprites[0];
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.position = startPosition.transform.position;
+        transform.rotation = startPosition.transform.rotation;
         destinationReached = false;
         _waypointsPassed = 0;
         _nextWaypoint = waypoints[_waypointsPassed].GetComponent<Waypoint>();

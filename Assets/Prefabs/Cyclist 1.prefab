@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 502484807629797195}
   m_Layer: 0
   m_Name: Cyclist 1
-  m_TagString: Untagged
+  m_TagString: Other Cyclist
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2937078283993726030, guid: 456b9ddadc9364924ba12412e34dc02e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -106,6 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd42f14c7a54d4246bceef03db83fbb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Cyclist
+  id: 
+  index: 0
   startPosition: {fileID: 0}
   isAlive: 0
   destinationReached: 0
@@ -117,11 +119,12 @@ MonoBehaviour:
   swerve: 1
   speedVariation: 1
   moveSpeed: 2.5
-  turnSpeed: 3
-  swerveSpeed: 1
-  swerveAmt: 0.03
-  speedVariance: 2
-  speedChangeRate: 0.25
+  turnSpeed: 4
+  swerveSpeed: 2
+  swerveAmt: 0.022
+  speedVariance: 1.5
+  speedChangeRate: 0.75
+  sprites: []
 --- !u!50 &2051669422085216580
 Rigidbody2D:
   serializedVersion: 5
@@ -179,7 +182,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

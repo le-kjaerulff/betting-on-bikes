@@ -5,8 +5,16 @@ TagManager:
   serializedVersion: 3
   tags:
   - Car
-  - Red
   - Green
+  - Blue
+  - Orange
+  - Purple
+  - House
+  - Tree
+  - Fence
+  - Water
+  - Building
+  - Other Cyclist
   layers:
   - Default
   - TransparentFX
